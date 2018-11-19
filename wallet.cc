@@ -168,15 +168,6 @@ Wallet& operator+=(Wallet &l, Wallet &w) {
 	return l;
 }
 
-Wallet&& operator+=(Wallet &&l, Wallet &w) {
-	std::cerr << "&&" << l << " += &" << w << std::endl;
-	auto sum = w.getUnits() + l.getUnits();
-	w.setUnits(0);
-	l.setUnits(sum);
-
-	return std::move(l);
-}
-
 Wallet& operator-=(Wallet &l, Wallet &w) {
 	std::cerr << "&" << l << " -= &" << w << std::endl;
 	l.setUnits(l.getUnits() - w.getUnits());
@@ -185,16 +176,9 @@ Wallet& operator-=(Wallet &l, Wallet &w) {
 	return l;
 }
 
-Wallet&& operator-=(Wallet &&l, Wallet &w) {
-	std::cerr << "&&" << l << " -= &&" << w << std::endl;
-	l.setUnits(l.getUnits() - w.getUnits());
-	w.setUnits(w.getUnits()*2);
-
-	return std::move(l);
-}
-
-
-Wallet& operator+=(Wallet &lhs, Wallet &&w) { return lhs += w; }
-Wallet&& operator+=(Wallet &&lhs, Wallet &&w) { return std::move(lhs += w); }
-Wallet& operator-=(Wallet &lhs, Wallet &&w) { return lhs += w; }
-Wallet&& operator-=(Wallet &&lhs, Wallet &&w) { return std::move(lhs += w); }
+Wallet&& operator+=(Wallet &&l, Wallet &w) { return std::move(l += w); }
+Wallet&& operator+=(Wallet &&l, Wallet &&w) { return std::move(l += w); }
+Wallet& operator+=(Wallet &l, Wallet &&w) { return l += w; }
+Wallet& operator-=(Wallet &l, Wallet &&w) { return l -= w; }
+Wallet&& operator-=(Wallet &&l, Wallet &w) { return std::move(l -= w); }
+Wallet&& operator-=(Wallet &&l, Wallet &&w) { return std::move(l += w); }

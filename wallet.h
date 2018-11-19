@@ -61,13 +61,14 @@ private:
 	friend bool operator<=(const Wallet &l, const Wallet &r);
 	friend bool operator>(const Wallet &l, const Wallet &r);
 	friend bool operator>=(const Wallet &l, const Wallet &r);
+	
 	friend Wallet& operator+=(Wallet &lhs, Wallet &w);
-	friend Wallet&& operator+=(Wallet &&lhs, Wallet &w);
-	friend Wallet& operator-=(Wallet &lhs, Wallet &w);
-	friend Wallet&& operator-=(Wallet &&lhs, Wallet &w);
 	friend Wallet& operator+=(Wallet &lhs, Wallet &&w);
+	friend Wallet&& operator+=(Wallet &&lhs, Wallet &w);
 	friend Wallet&& operator+=(Wallet &&lhs, Wallet &&w);
+	friend Wallet& operator-=(Wallet &lhs, Wallet &w);
 	friend Wallet& operator-=(Wallet &lhs, Wallet &&w);
+	friend Wallet&& operator-=(Wallet &&lhs, Wallet &w);
 	friend Wallet&& operator-=(Wallet &&lhs, Wallet &&w);
 
 };
