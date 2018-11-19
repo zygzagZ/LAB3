@@ -61,7 +61,7 @@ private:
 	friend bool operator<=(const Wallet &l, const Wallet &r);
 	friend bool operator>(const Wallet &l, const Wallet &r);
 	friend bool operator>=(const Wallet &l, const Wallet &r);
-	
+
 	friend Wallet& operator+=(Wallet &lhs, Wallet &w);
 	friend Wallet& operator+=(Wallet &lhs, Wallet &&w);
 	friend Wallet&& operator+=(Wallet &&lhs, Wallet &w);
@@ -76,8 +76,6 @@ private:
 const Wallet & Empty();
 Wallet operator+(Wallet &&w1, Wallet &w2);
 Wallet operator+(Wallet &&w1, Wallet &&w2);
-Wallet operator-(Wallet &&w1, Wallet &w2);
-Wallet operator-(Wallet &&w1, Wallet &&w2);
 
 
 inline bool operator==(const Wallet &l, const Wallet &r) { return l.money == r.money; }
@@ -87,10 +85,16 @@ inline bool operator<=(const Wallet &l, const Wallet &r) { return l.money <= r.m
 inline bool operator>(const Wallet &l, const Wallet &r) { return l.money > r.money; }
 inline bool operator>=(const Wallet &l, const Wallet &r) { return l.money >= r.money; }
 
-Wallet& operator+=(Wallet &lhs, Wallet &w);
-Wallet&& operator+=(Wallet &&lhs, Wallet &w);
-Wallet& operator-=(Wallet &lhs, Wallet &w);
-Wallet&& operator-=(Wallet &&lhs, Wallet &w);
+
+Wallet& operator+=(Wallet &l, Wallet &w);
+Wallet& operator-=(Wallet &l, Wallet &w);
+
+inline Wallet&& operator+=(Wallet &&l, Wallet &w) { return std::move(l += w); }
+inline Wallet&& operator+=(Wallet &&l, Wallet &&w) { return std::move(l += w); }
+inline Wallet& operator+=(Wallet &l, Wallet &&w) { return l += w; }
+inline Wallet& operator-=(Wallet &l, Wallet &&w) { return l -= w; }
+inline Wallet&& operator-=(Wallet &&l, Wallet &w) { return std::move(l -= w); }
+inline Wallet&& operator-=(Wallet &&l, Wallet &&w) { return std::move(l += w); }
 
 std::ostream & operator<<(std::ostream &os, const Wallet &w);
 

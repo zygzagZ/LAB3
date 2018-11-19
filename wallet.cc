@@ -175,10 +175,3 @@ Wallet& operator-=(Wallet &l, Wallet &w) {
 
 	return l;
 }
-
-Wallet&& operator+=(Wallet &&l, Wallet &w) { return std::move(l += w); }
-Wallet&& operator+=(Wallet &&l, Wallet &&w) { return std::move(l += w); }
-Wallet& operator+=(Wallet &l, Wallet &&w) { return l += w; }
-Wallet& operator-=(Wallet &l, Wallet &&w) { return l -= w; }
-Wallet&& operator-=(Wallet &&l, Wallet &w) { return std::move(l -= w); }
-Wallet&& operator-=(Wallet &&l, Wallet &&w) { return std::move(l += w); }
