@@ -37,11 +37,7 @@ template<
 
 	Wallet& operator=(int64_t w);
 	Wallet& operator=(Wallet &&w);
-	Wallet& operator+=(Wallet &w);
-	Wallet& operator+=(Wallet &&w);
-	Wallet& operator-=(Wallet &w);
-	Wallet& operator-=(Wallet &&w);
-	Wallet& operator*=(double w);
+	Wallet& operator*=(int w);
 
 	const Operation & operator[] (int index) const {
 		return history[index];
@@ -60,10 +56,19 @@ private:
 	friend Wallet operator-(Wallet &&w1, Wallet &w2);
 	friend Wallet operator-(Wallet &&w1, Wallet &&w2);
 	friend bool operator==(const Wallet &l, const Wallet &r);
+	friend bool operator!=(const Wallet &l, const Wallet &r);
 	friend bool operator<(const Wallet &l, const Wallet &r);
 	friend bool operator<=(const Wallet &l, const Wallet &r);
 	friend bool operator>(const Wallet &l, const Wallet &r);
 	friend bool operator>=(const Wallet &l, const Wallet &r);
+	friend Wallet& operator+=(Wallet &lhs, Wallet &w);
+	friend Wallet&& operator+=(Wallet &&lhs, Wallet &w);
+	friend Wallet& operator-=(Wallet &lhs, Wallet &w);
+	friend Wallet&& operator-=(Wallet &&lhs, Wallet &w);
+	friend Wallet& operator+=(Wallet &lhs, Wallet &&w);
+	friend Wallet&& operator+=(Wallet &&lhs, Wallet &&w);
+	friend Wallet& operator-=(Wallet &lhs, Wallet &&w);
+	friend Wallet&& operator-=(Wallet &&lhs, Wallet &&w);
 
 };
 
@@ -75,10 +80,16 @@ Wallet operator-(Wallet &&w1, Wallet &&w2);
 
 
 inline bool operator==(const Wallet &l, const Wallet &r) { return l.money == r.money; }
+inline bool operator!=(const Wallet &l, const Wallet &r) { return l.money != r.money; }
 inline bool operator<(const Wallet &l, const Wallet &r) { return l.money < r.money; }
 inline bool operator<=(const Wallet &l, const Wallet &r) { return l.money <= r.money; }
 inline bool operator>(const Wallet &l, const Wallet &r) { return l.money > r.money; }
 inline bool operator>=(const Wallet &l, const Wallet &r) { return l.money >= r.money; }
+
+Wallet& operator+=(Wallet &lhs, Wallet &w);
+Wallet&& operator+=(Wallet &&lhs, Wallet &w);
+Wallet& operator-=(Wallet &lhs, Wallet &w);
+Wallet&& operator-=(Wallet &&lhs, Wallet &w);
 
 std::ostream & operator<<(std::ostream &os, const Wallet &w);
 

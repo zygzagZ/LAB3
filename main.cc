@@ -165,4 +165,10 @@ int main() {
 
 		cout << m3[0] << endl << m3[1] << endl << m3[2] << endl << m3[3] << endl;
 	}
+
+	{
+		Wallet w1, w2;
+		w1 = Wallet(4) += 2;
+		// w2 = w1 += 2; // błąd kompilacji 6
+	}
 }

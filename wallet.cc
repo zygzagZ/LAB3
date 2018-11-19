@@ -83,53 +83,10 @@ Wallet Wallet::fromBinary(std::string str) {
 	return Wallet(static_cast<int>(std::bitset<20>(str).to_ulong()));
 }
 
-Wallet& Wallet::operator+=(Wallet &w) {
-	std::cerr << *this << " += &" << w << std::endl;
-	auto sum = w.getUnits() + getUnits();
-	w.setUnits(0);
-	setUnits(sum);
-
-	return *this;
-}
-
-Wallet& Wallet::operator+=(Wallet &&w) {
-	std::cerr << *this << " += &&" << w << std::endl;
-	auto sum = w.getUnits() + getUnits();
-	w.setUnits(0);
-	setUnits(sum);
-
-	return *this;
-}
-
-Wallet& Wallet::operator-=(Wallet &w) {
-	std::cerr << *this << " -= &" << w << std::endl;
-	setUnits(getUnits() - w.getUnits());
-	w.setUnits(w.getUnits()*2);
-
-	return *this;
-}
-
-Wallet& Wallet::operator-=(Wallet &&w) {
-	std::cerr << *this << " -= &&" << w << std::endl;
-	setUnits(getUnits() - w.getUnits());
-	w.setUnits(w.getUnits()*2);
-
-	return *this;
-}
-
-Wallet& Wallet::operator*=(double w) {
+Wallet& Wallet::operator*=(int w) {
 	std::cerr << *this << " *= " << w << std::endl;
 	setUnits(money*w);
 
-	return *this;
-}
-
-Wallet& Wallet::operator=(Wallet &&w) {
-	if (this != &w) { 
-		std::cerr << *this << " = &&w " << w << std::endl;
-		history = std::move(w.history);
-		setUnits(w.money);
-	}
 	return *this;
 }
 
@@ -144,6 +101,15 @@ void Wallet::setUnits(int64_t w) {
 
 	history.emplace_back(money, w, getTime());
 	money = w;
+}
+
+Wallet& Wallet::operator=(Wallet &&w) {
+	if (this != &w) { 
+		std::cerr << *this << " = &&w " << w << std::endl;
+		history = std::move(w.history);
+		setUnits(w.money);
+	}
+	return *this;
 }
 
 Wallet& Wallet::operator=(int64_t w) {
@@ -192,3 +158,43 @@ Wallet operator-(Wallet &&w1, Wallet &&w2) {
 	w1.history.pop_back();
 	return std::move(w1);
 }
+
+Wallet& operator+=(Wallet &l, Wallet &w) {
+	std::cerr << "&" << l << " += &" << w << std::endl;
+	auto sum = w.getUnits() + l.getUnits();
+	w.setUnits(0);
+	l.setUnits(sum);
+
+	return l;
+}
+
+Wallet&& operator+=(Wallet &&l, Wallet &w) {
+	std::cerr << "&&" << l << " += &" << w << std::endl;
+	auto sum = w.getUnits() + l.getUnits();
+	w.setUnits(0);
+	l.setUnits(sum);
+
+	return std::move(l);
+}
+
+Wallet& operator-=(Wallet &l, Wallet &w) {
+	std::cerr << "&" << l << " -= &" << w << std::endl;
+	l.setUnits(l.getUnits() - w.getUnits());
+	w.setUnits(w.getUnits()*2);
+
+	return l;
+}
+
+Wallet&& operator-=(Wallet &&l, Wallet &w) {
+	std::cerr << "&&" << l << " -= &&" << w << std::endl;
+	l.setUnits(l.getUnits() - w.getUnits());
+	w.setUnits(w.getUnits()*2);
+
+	return std::move(l);
+}
+
+
+Wallet& operator+=(Wallet &lhs, Wallet &&w) { return lhs += w; }
+Wallet&& operator+=(Wallet &&lhs, Wallet &&w) { return std::move(lhs += w); }
+Wallet& operator-=(Wallet &lhs, Wallet &&w) { return lhs += w; }
+Wallet&& operator-=(Wallet &&lhs, Wallet &&w) { return std::move(lhs += w); }
